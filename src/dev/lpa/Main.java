@@ -7,16 +7,24 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+// NOTES
+
+// FILE HANDLE
+    // ref to a file used by OS to track the file
+    // An abstract rep of the file; doesn't contain file's actual data
+
+// FILE RESOURCE
+    // The actual data from the file
+    // Stored on disk, accessed by OS and applications
+
 public class Main {
     public static void main(String[] args) throws IOException {
 
         String filename = "testing.csv";
-        testFile2(filename);
 
         File file = new File(filename);
         if (!file.exists()){
             System.out.println("I can't run unless this file exists");
-            System.out.println("Quitting application, go figure it out");
             // returning in main causes app to end
             return;
         }
@@ -69,7 +77,11 @@ public class Main {
         try (FileReader reader = new FileReader(fileName)) {
             // Can have multiple catch clauses
             // This might occur when opening or closing resource
-        } catch (FileNotFoundException e) {
+        }
+        catch(NullPointerException | IllegalArgumentException badData){
+            System.out.println("User has entered bad data " + badData.getMessage());
+        }
+        catch (FileNotFoundException e) {
             System.out.println("File '" + fileName + " ' does not exist" );
             throw new RuntimeException(e);
         } catch (IOException e) {
