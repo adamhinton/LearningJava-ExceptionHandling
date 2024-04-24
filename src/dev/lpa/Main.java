@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -17,12 +18,28 @@ import java.nio.file.Paths;
     // The actual data from the file
     // Stored on disk, accessed by OS and applications
 
+
+// TWO APPROACHES:
+
+// LBYL
+// Look before you leap
+// check for errors before performing an op
+
+// EAFP
+// Easier to ask forgiveness than permission
+// Assumes op will usually succeed, and handles any errors that occur if they do happen
+
+
 public class Main {
     public static void main(String[] args) throws IOException {
 
+        System.out.println("cwd = " + new File("").getAbsolutePath());
+
         String filename = "files/testing.csv";
 
-        File file = new File(filename);
+        File file = new File(new File("").getAbsolutePath(), filename);
+        System.out.println(file.getAbsolutePath());
+
         if (!file.exists()){
             System.out.println("I can't run unless this file exists");
             // returning in main causes app to end
@@ -30,16 +47,20 @@ public class Main {
         }
         System.out.println("Good to go, file exists");
 
-        // TWO APPROACHES:
 
-        // LBYL
-        // Look before you leap
-        // check for errors before performing an op
+        for (File f : File.listRoots()){
+            System.out.println(f);
+        }
 
-        // EAFP
-        // Easier to ask forgiveness than permission
-        // Assumes op will usually succeed, and handles any errors that occur if they do happen
-
+        System.out.println("--------------");
+        Path path = Paths.get("files/testing.csv");
+        System.out.println(file.getAbsolutePath());
+        if (!Files.exists(path)){
+            System.out.println("2. I can't run unless this file exists");
+            // returning in main causes app to end
+            return;
+        }
+        System.out.println("2. Good to go, file exists");
 
 
     }
